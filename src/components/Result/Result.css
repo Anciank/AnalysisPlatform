@@ -1,0 +1,20 @@
+/* Result.css */
+
+.Result {
+  margin: 10px auto 0 auto;
+  background-color: #fff; /* Set the background color to white */
+  color: #000; /* Set the font color to black */
+  border: 1px solid #000; /* Set the border color to black */
+  padding: 20px; /* Add padding for better spacing */
+  border-radius: 8px; /* Add border-radius for rounded corners */
+  transition: box-shadow 0.3s; /* Add a transition for smooth hover effect */
+}
+
+.Result:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a little shadow on hover */
+}
+
+.Result pre {
+  font-size: 14px;
+  overflow: auto;
+}

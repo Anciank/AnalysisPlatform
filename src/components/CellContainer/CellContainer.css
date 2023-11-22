@@ -1,0 +1,8 @@
+.CellContainer {
+  flex-grow: 1;
+  border: none;
+}
+
+.databaseName {
+  margin: 20px;
+}
