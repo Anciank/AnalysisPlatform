@@ -5,6 +5,7 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-sql';
 import 'ace-builds/src-noconflict/theme-github';
 import 'ace-builds/src-noconflict/ext-language_tools';
+import 'ace-builds/src-noconflict/snippets/sql'; 
 import './CodeInput.css';
 
 interface CodeInputProps {
@@ -49,5 +50,7 @@ const CodeInput: React.FC<CodeInputProps> = ({ onRun }) => {
     </div>
   );
 };
+
+ace.config.set('basePath', '/path/to/ace');
 
 export default CodeInput;

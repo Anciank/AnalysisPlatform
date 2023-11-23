@@ -3,12 +3,13 @@
 import React, { useState } from 'react';
 import Cell from '../Cell/Cell';
 import "./CellContainer.css"
+import { Database } from '../../App';
 
 interface CellContainerProps {
-  databaseName: string;
+  whichDatabase: Database;
 }
 
-const CellContainer: React.FC<CellContainerProps> = ({ databaseName }) => {
+const CellContainer: React.FC<CellContainerProps> = ({ whichDatabase }) => {
   const [cells, setCells] = useState([{ id: 1 }]);
 
   const handleCellRun = (cellId: number, code: string) => {
@@ -27,7 +28,7 @@ const CellContainer: React.FC<CellContainerProps> = ({ databaseName }) => {
 
   return (
     <div className='CellContainer'>
-      <h3 className='databaseName'>{databaseName}</h3>
+      <h3 className='databaseName'>{whichDatabase.databaseName}</h3>
       {cells.map((cell) => (
         <Cell key={cell.id} cellId={cell.id} onRun={handleCellRun} />
       ))}
