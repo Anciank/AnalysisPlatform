@@ -7,30 +7,19 @@ import { Database } from '../../App';
 
 interface CellContainerProps {
   whichDatabase: Database;
+  getRunningCell: (dbId: number, cellId:number, code: string) => void;
 }
 
-const CellContainer: React.FC<CellContainerProps> = ({ whichDatabase }) => {
-  const [cells, setCells] = useState([{ id: 1 }]);
-
-  const handleCellRun = (cellId: number, code: string) => {
-    // Handle the code run logic (e.g., send the code to the backend)
-    console.log(`Cell ${cellId} executed: ${code}`);
-
-    // Check if the current cell is the last one
-    const isLastCell = cellId === cells[cells.length - 1].id;
-
-    if (isLastCell) {
-      // If it's the last cell, add a new cell
-      const newCellId = cells.length + 1;
-      setCells([...cells, { id: newCellId }]);
-    }
-  };
+const CellContainer: React.FC<CellContainerProps> = ({ whichDatabase, getRunningCell }) => {
+  const handleCellRun = (cellId: number, code: string): void => {
+    getRunningCell(whichDatabase.id, cellId, code);
+  }
 
   return (
     <div className='CellContainer'>
       <h3 className='databaseName'>{whichDatabase.databaseName}</h3>
-      {cells.map((cell) => (
-        <Cell key={cell.id} cellId={cell.id} onRun={handleCellRun} />
+      {whichDatabase.cells.map((cell) => (
+        <Cell key={cell.id} whichCell={cell} runCell={handleCellRun}/>
       ))}
     </div>
   );

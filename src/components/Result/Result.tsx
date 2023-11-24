@@ -4,10 +4,7 @@ import React from 'react';
 import "./Result.css"
 
 interface ResultProps {
-  result: {
-    message: string;
-    data: any[]; // Adjust the type based on your actual result structure
-  };
+  result: string
 }
 
 const Result: React.FC<ResultProps> = ({ result }) => {

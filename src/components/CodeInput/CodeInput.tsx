@@ -1,6 +1,6 @@
 // CodeInput.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-sql';
 import 'ace-builds/src-noconflict/theme-github';
@@ -9,18 +9,24 @@ import 'ace-builds/src-noconflict/snippets/sql';
 import './CodeInput.css';
 
 interface CodeInputProps {
-  onRun: (code: string) => void;
+  runCodeInput: (code: string) => void;
+  defaultQuery?: string;
 }
 
-const CodeInput: React.FC<CodeInputProps> = ({ onRun }) => {
-  const [sqlQuery, setSqlQuery] = useState('');
+const CodeInput: React.FC<CodeInputProps> = ({ runCodeInput, defaultQuery = `-- Your code here` }) => {
+  const [sqlQuery, setSqlQuery] = useState(defaultQuery);
+
+  useEffect(() => {
+    // Update the state if the defaultQuery prop changes
+    setSqlQuery(defaultQuery);
+  }, [defaultQuery]);
 
   const handleChange = (value: string) => {
     setSqlQuery(value);
   };
 
   const handleRunClick = () => {
-    onRun(sqlQuery);
+    runCodeInput(sqlQuery);
   };
 
   return (
@@ -44,6 +50,7 @@ const CodeInput: React.FC<CodeInputProps> = ({ onRun }) => {
           minLines: 5,
           maxLines: Infinity,
         }}
+        //value={defaultQuery}
       />
 
       <button className='runButton' onClick={handleRunClick}>Run SQL Query</button>
