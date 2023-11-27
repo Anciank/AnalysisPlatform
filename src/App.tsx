@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import CellContainer from "./components/CellContainer/CellContainer";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -11,7 +11,7 @@ export interface Cells {
 
 export interface Database {
   id: number;
-  databasePath: string;
+  databaseFile: File | null;
   databaseName: string;
   cells: Cells[];
 }
@@ -20,21 +20,21 @@ function App() {
   const [databases, setDatabases] = useState<Database[]>([{
     id: 0,
     databaseName: "init database",
-    databasePath: "filepath",
+    databaseFile: null,
     cells: [{ id: 0, code: "code 1", result: "" }],
   }]);
   const [currentDB, setCurrentDB] = useState<Database>(databases[0]);
+  const [isWaiting, setIsWaiting] = useState<boolean>(false);
 
 
-  const handleAddDatabase = () => {
-    const pathInput = window.prompt("Enter the path for the new database:");
+  const handleAddDatabase = (dbFile: File | null) => {
     const nameInput = window.prompt("Enter the name for the new database:");
 
-    if (pathInput && nameInput) {
+    if (nameInput) {
       const newDatabase: Database = {
         id: databases.length, // or use a unique identifier
         databaseName: nameInput,
-        databasePath: pathInput,
+        databaseFile: dbFile,
         cells: [{ id: 0, code: "Your code here", result: "" }],
       };
 
@@ -79,10 +79,12 @@ function App() {
         databases={databases}
         onAddDatabase={handleAddDatabase}
         changeDatabase={handleChangeDB}
+        setWaiting={setIsWaiting}
       />
       <CellContainer
         whichDatabase={currentDB}
         getRunningCell={runCell}
+        isWaiting={isWaiting}
       />
     </div>
   );

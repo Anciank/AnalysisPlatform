@@ -1,6 +1,6 @@
 // Cell.tsx
 
-import React, { useState } from 'react';
+import React from 'react';
 import CodeInput from '../CodeInput/CodeInput';
 import Result from '../Result/Result';
 import "./Cell.css"
