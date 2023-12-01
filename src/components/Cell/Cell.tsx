@@ -13,7 +13,8 @@ interface CellProps {
 
 const Cell: React.FC<CellProps> = ({ whichCell, runCell }) => {
   const handleCodeRun = (code: string) => {
-    //send code 
+    //send code to "localhost:8080/code" along with cell id and database id.
+    //after backend processed the code and give a result. update whickcell.result.
 
     runCell(whichCell.id, code);    
   };

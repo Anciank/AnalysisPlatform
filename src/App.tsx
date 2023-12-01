@@ -46,28 +46,70 @@ function App() {
     setCurrentDB(db);
   };
 
-  const runCell = (dbId: number, cellId: number, code: string): void => {
-    if (cellId === databases[dbId].cells.length - 1) {
-      //add a new cell here
-      const newCell: Cells = {
-        id: databases[dbId].cells.length,
-        code: "-- Your code here",
-        result: "",
-      };
+  const runCell = async (dbId: number, cellId: number, code: string): Promise<void> => {
+    try {
+      // Mock server URL
+      const serverUrl = "http://localhost:8080/code";
   
-      const addedDatabase: Database = {
-        ...databases[dbId],
-        cells: [...databases[dbId].cells, newCell],
-      };
-
-      const updatedDatabases = databases.map(db => db.id === addedDatabase.id ? addedDatabase : db);
+      // Send a POST request to the mock server
+      const response = await fetch(serverUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          databaseId: databases[dbId].id,
+          cellId: cellId,
+          code: code,
+        }),
+      });
   
-      setDatabases(updatedDatabases);
-      setCurrentDB(updatedDatabases[dbId]);
-      return;
+      if (response.ok) {
+        // Mock server response
+        const result = await response.json();
+  
+        // Update the result of the current cell
+        const updatedDatabases = databases.map(db =>
+          db.id === databases[dbId].id
+            ? {
+                ...db,
+                cells: db.cells.map(cell =>
+                  cell.id === cellId ? { ...cell, result: result } : cell
+                ),
+              }
+            : db
+        );
+  
+        setDatabases(updatedDatabases);
+      } else {
+        console.error("Error:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error executing code", error);
+    } finally {
+      if (cellId === databases[dbId].cells.length - 1) {
+        // If the executed cell is the last cell, add a new cell
+        const newCell: Cells = {
+          id: databases[dbId].cells.length,
+          code: "-- Your code here",
+          result: "",
+        };
+  
+        const addedDatabase: Database = {
+          ...databases[dbId],
+          cells: [...databases[dbId].cells, newCell],
+        };
+  
+        const updatedDatabases = databases.map(db =>
+          db.id === addedDatabase.id ? addedDatabase : db
+        );
+  
+        setDatabases(updatedDatabases);
+        setCurrentDB(updatedDatabases[dbId]);
+      }
     }
-  
   };
+  
 
   console.log(databases);
   

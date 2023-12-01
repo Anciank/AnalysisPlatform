@@ -23,13 +23,24 @@ const Sidebar: React.FC<SidebarProps> = ({ databases, onAddDatabase, changeDatab
       formData.append("file", selectedFile);
 
       try {
-        // Simulate file upload delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        //implement file transfer logic here.
+        // Add the logic to get the database ID and append it to the FormData
+        const databaseId = databases.length.toString();
+        formData.append("databaseId", databaseId);
 
-        // Perform file upload logic here
-        console.log("File uploaded successfully");
-        // You can add your actual file upload logic here
+        // Replace "http://localhost:8080/databaseFile" with your actual server URL
+        const response = await fetch("http://localhost:8080/databaseFile", {
+          method: "POST",
+          body: formData,
+        });
 
+        if (response.ok) {
+          console.log("File uploaded successfully");
+          // You can handle success response here
+        } else {
+          console.error("File upload failed");
+          // You can handle error response here
+        }
       } catch (error) {
         console.error("Error uploading file", error);
       } finally {
